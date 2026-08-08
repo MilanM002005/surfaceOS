@@ -1,0 +1,16 @@
+# Core (required to run the live app)
+opencv-python>=4.9,<5
+mediapipe>=0.10,<0.11
+numpy>=1.26,<3
+PyYAML>=6.0
+
+# Used by specific modules
+scipy>=1.11              # optional geometry/filtering helpers
+shapely>=2.0              # lasso selection polygon containment
+filterpy>=1.4              # optional Kalman filter smoothing alternative
+scikit-learn>=1.3          # optional learned touch classifier (Phase 4 upgrade)
+svgwrite>=1.4              # SVG export
+joblib>=1.3                # persisting a trained LearnedTouchClassifier
+
+# Dev / evaluation
+pytest>=7.4
