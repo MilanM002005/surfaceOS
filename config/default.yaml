@@ -1,0 +1,87 @@
+# SurfaceOS default configuration
+# Every value here can be overridden by calibration/session data at runtime.
+
+camera:
+  device_index: 0
+  width: 1280
+  height: 720
+  target_fps: 30
+  # If your OS/driver reports MJPG support, this usually gets closer to target_fps
+  fourcc: "MJPG"
+
+board:
+  # Canonical rectified board resolution (pixels). Aspect ratio should match
+  # the physical board (e.g. a 4:3 whiteboard -> 1200x900).
+  canonical_width: 1200
+  canonical_height: 900
+
+hand_tracking:
+  model_path: "models/hand_landmarker.task"
+  num_hands: 1
+  min_hand_detection_confidence: 0.5
+  min_hand_presence_confidence: 0.5
+  min_tracking_confidence: 0.5
+  # MediaPipe landmark indices used throughout the pipeline
+  landmarks:
+    index_tip: 8
+    index_dip: 7
+    index_pip: 6
+    index_mcp: 5
+    thumb_tip: 4
+    middle_tip: 12
+    wrist: 0
+
+smoothing:
+  method: "one_euro"        # one_euro | ema | kalman
+  ema_alpha: 0.35
+  one_euro:
+    min_cutoff: 1.0
+    beta: 0.02
+    d_cutoff: 1.0
+
+touch_confidence:
+  # Hysteresis thresholds from implementation.md section 7.4 / 3.B
+  enter_touch_threshold: 0.70
+  enter_touch_frames: 3
+  exit_touch_threshold: 0.45
+  hover_threshold: 0.35
+  # Feature weights (sum need not be 1.0, they are re-normalized internally)
+  weights:
+    z_level: 0.28
+    z_velocity: 0.18
+    xy_speed: 0.14
+    finger_extension: 0.10
+    dwell: 0.15
+    board_plane_consistency: 0.15
+  dwell_window_seconds: 0.25
+  max_history_seconds: 2.0
+
+gesture_engine:
+  pinch_distance_threshold: 0.045   # normalized board units, MVP pen-down
+  two_finger_distance_threshold: 0.06
+  fist_hold_seconds: 0.6
+  undo_tap_window_seconds: 0.4
+
+self_healing_calibration:
+  enabled: true
+  recheck_every_n_frames: 5
+  min_inlier_ratio: 0.35
+  max_reprojection_error_px: 6.0
+  max_corner_displacement_px: 40.0
+  orb_features: 800
+  lowe_ratio: 0.75
+
+stroke:
+  default_thickness: 0.006
+  min_thickness: 0.002
+  max_thickness: 0.02
+  min_point_distance: 0.002   # normalized board units, avoids over-dense strokes
+
+paths:
+  documents_dir: "data/documents"
+  calibration_dir: "data/calibration"
+  fingerprints_dir: "data/fingerprints"
+
+evaluation:
+  touch_targets: 20
+  latency_target_ms: 100
